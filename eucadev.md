@@ -29,7 +29,9 @@ This method produces a dev/test environment in a single virtual machine, with al
   * `install-type` is `"source"` by default. Set the value to `"packages"` for an RPM-based installation,  which can take less than half the time of a source install (e.g., 20 min instead of 48), but won't allow you to edit and re-deploy code easily.
   * In Vagrantfile, `memory` is 3GB (`3072`) by default. For a source-based install without a Web console, you may be able to get away with less, such as 1GB. Giving the VM more should improve performance.
 
-8. Start the VM and wait for eucadev to install Eucalyptus in it (may take a long time, _20-60 min_ or more):
+8. Checkout the branch of the eucalyptus-cookbook which you intend to install.  Default is master, but master is the development branch, so to get a stable build you may want to checkout the last stable branch.  For example 'euca-4.2' is the current stable branch.  You can see the stable branch in the table in the README.md.
+
+9. Start the VM and wait for eucadev to install Eucalyptus in it (may take a long time, _20-60 min_ or more):
 
         $ cd eucadev; vagrant up
         
