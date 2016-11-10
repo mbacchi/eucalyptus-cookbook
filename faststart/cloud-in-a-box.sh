@@ -407,6 +407,27 @@ if [ "$primary_from_route" != "" ]; then
     # the physical bridge.
     echo "Virtual network interface br0 found"
     active_nic="br0"
+    # DO SOMETHING BETTER HERE USERS MAY HAVE SETUP THE BRIDGE MANUALLY AND
+    # HAVE A DIFFERENT ADAPTER THAN THE 3 YOU HAVE LISTED BELOW (such as
+    #below:)
+    #[root@eucalyptus1 recipes]# ip addr show
+    #1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN
+    #link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    #inet 127.0.0.1/8 scope host lo
+    #   valid_lft forever preferred_lft forever
+    #inet6 ::1/128 scope host
+    #   valid_lft forever preferred_lft forever
+    #2: enp7s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast
+    #master br0 state UP qlen 1000
+    #link/ether 50:e5:49:b8:a9:12 brd ff:ff:ff:ff:ff:ff
+    #6: br0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP
+    #link/ether 50:e5:49:b8:a9:12 brd ff:ff:ff:ff:ff:ff
+    #inet 10.10.10.164/24 brd 10.10.10.255 scope global br0
+    #   valid_lft forever preferred_lft forever
+    #inet6 fe80::52e5:49ff:feb8:a912/64 scope link
+    #   valid_lft forever preferred_lft forever
+    #
+
     if [ "$(ip link show em1 2>/dev/null)" ]; then
         echo "Physical interface em1 found"
         ciab_nic_guess="em1"
