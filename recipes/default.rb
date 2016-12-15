@@ -67,20 +67,22 @@ execute "Flush and save iptables" do
   not_if "service eucalyptus-cc status || service eucanetd status || service eucalyptus-cloud status || service eucalyptus-nc status"
 end
 
-if Chef::VersionConstraint.new("~> 6.0").include?(node['platform_version'])
-  ## Setup NTP
-  include_recipe "ntp"
-  execute "ntpdate -u #{node["eucalyptus"]["ntp-server"]}" do
-    cwd '/tmp'
-  end
-else
-  yum_package "chrony" do
-    action :upgrade
-    options node['eucalyptus']['yum-options']
-  end
-  service "chronyd" do
-    supports :status => true, :restart => true, :reload => true
-    action [ :enable, :start ]
+if node['eucalyptus']['configure-ntp']
+  if Chef::VersionConstraint.new("~> 6.0").include?(node['platform_version'])
+    ## Setup NTP
+    include_recipe "ntp"
+    execute "ntpdate -u #{node["eucalyptus"]["ntp-server"]}" do
+      cwd '/tmp'
+    end
+  else
+    yum_package "chrony" do
+      action :upgrade
+      options node['eucalyptus']['yum-options']
+    end
+    service "chronyd" do
+      supports :status => true, :restart => true, :reload => true
+      action [ :enable, :start ]
+    end
   end
 end
 
@@ -90,6 +92,7 @@ yum_repository "eucalyptus-release" do
   url node["eucalyptus"]["eucalyptus-repo"]
   gpgkey node["eucalyptus"]["eucalyptus-gpg-key"]
   metadata_expire "1"
+  not_if "yum repolist | grep -i eucalyptus-release"
 end
 
 if Eucalyptus::Enterprise.is_enterprise?(node)
@@ -119,6 +122,7 @@ if Eucalyptus::Enterprise.is_enterprise?(node)
     sslclientkey key_file
     sslverify node['eucalyptus']['enterprise']['sslverify']
     metadata_expire "1"
+    not_if "yum repolist | grep -i eucalyptus-enterprise-release"
   end
 end
 
@@ -127,12 +131,14 @@ yum_repository "euca2ools-release" do
   url node["eucalyptus"]["euca2ools-repo"]
   gpgkey node["eucalyptus"]["euca2ools-gpg-key"]
   metadata_expire "1"
+  not_if "yum repolist | grep -i euca2ools-release"
 end
 
 yum_repository "ceph" do
   description "Ceph Package Repo"
   url node['eucalyptus']['ceph-repo']
   gpgcheck false
+  not_if "yum repolist | grep -i ceph"
 end
 
 if Chef::VersionConstraint.new("~> 6.0").include?(node['platform_version'])
@@ -142,11 +148,13 @@ end
 remote_file "/tmp/epel-release.rpm" do
   source node["eucalyptus"]["epel-rpm"]
   not_if "rpm -qa | grep 'epel-release'"
+  action :nothing
 end
 
 execute 'yum install -y *epel*.rpm' do
   cwd '/tmp'
-  not_if "yum repolist | grep epel"
+  notifies :create, "remote_file[/tmp/epel-release.rpm]", :immediately
+  not_if "yum repolist | grep -i epel"
 end
 
 execute "ssh-keygen -f /root/.ssh/id_rsa -P ''" do

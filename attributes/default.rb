@@ -34,6 +34,7 @@ default['eucalyptus']['yum-options'] = ""
 default['eucalyptus']['init-script-url'] = ""
 default['eucalyptus']['post-script-url'] = ""
 default['eucalyptus']['configure-service-timeout'] = 180
+default['eucalyptus']['configure-ntp'] = true
 
 #### User console
 default['eucalyptus']['user-console']['source-branch'] = "develop"

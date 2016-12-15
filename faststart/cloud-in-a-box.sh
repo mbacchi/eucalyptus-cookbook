@@ -416,7 +416,7 @@ if [ "$primary_from_route" != "" ]; then
         echo "Physical interface eth0 found"
         ciab_nic_guess="eth0"
         ciab_bridge_primary="1"
-    elif [ "$(ip link show eno1 2>/dev/null)" ]; then
+    elif [ "$(ip link show en01 2>/dev/null)" ]; then
         echo "Physical interface en01 found"
         ciab_nic_guess="en01"
         ciab_bridge_primary="1"

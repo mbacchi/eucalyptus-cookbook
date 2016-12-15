@@ -136,8 +136,7 @@ elsif node['eucalyptus']['topology']['ceph-radosgw']
   execute "#{euctl} objectstorage.s3provider.s3endpointheadresponse=200"
 else
   execute "Set OSG providerclient" do
-    # for the short term due to errors in CI, run with --debug
-    command "#{euctl} --debug objectstorage.providerclient=walrus"
+    command "#{euctl} objectstorage.providerclient=walrus"
     only_if "egrep '4.[0-9].[0-9]' #{node['eucalyptus']['home-directory']}/etc/eucalyptus/eucalyptus-version"
     retries 15
     retry_delay 20
@@ -205,8 +204,6 @@ end
 %w{objectstorage}.each do |service|
   ruby_block "Block until #{service} ready" do
     block do
-        # stole loop from:
-        # https://github.com/chef-cookbooks/aws/blob/bd40e6c668e3975a1bbb1e82361c462db646c221/providers/elastic_ip.rb#L70-L89
         begin
             # Timeout.timeout() apparently can't take the #{} chef
             # variable construct so use ruby @ instance variable instead
@@ -233,8 +230,6 @@ end
 %w{compute cloudformation}.each do |service|
   ruby_block "Block until #{service} ready" do
     block do
-        # stole loop from:
-        # https://github.com/chef-cookbooks/aws/blob/bd40e6c668e3975a1bbb1e82361c462db646c221/providers/elastic_ip.rb#L70-L89
         begin
             # Timeout.timeout() apparently can't take the #{} chef
             # variable construct so use ruby @ instance variable instead
@@ -323,8 +318,7 @@ clusters.each do |cluster, info|
   when "das"
     execute "Set das device" do
       Chef::Log.info "Setting #{cluster}.storage.dasdevice to #{info["das-device"]}"
-      # for the short term due to errors in CI, run with --debug
-      command "#{euctl} -n --debug #{cluster}.storage.dasdevice=#{info["das-device"]}"
+      command "#{euctl} -n #{cluster}.storage.dasdevice=#{info["das-device"]}"
       retries 15
       retry_delay 20
     end
