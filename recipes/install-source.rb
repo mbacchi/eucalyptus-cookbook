@@ -156,6 +156,10 @@ execute "install-eucalyptus" do
   action :nothing
 end
 
+execute "Add VNET_USE_SYSTEMCTL to eucalyptus.conf file" do
+  command "echo VNET_USE_SYSTEMCTL=Y >> /etc/eucalyptus/eucalyptus.conf"
+  only_if { ::File.exist? "/etc/eucalyptus/eucalyptus.conf" }
+end
 
 ##########################
 # Install storage-san-libs
