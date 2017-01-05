@@ -6,6 +6,8 @@ if node['eucalyptus']['install-type'] == 'sources'
   # Install eucalyptus-selinux
   ############################
 
+  source_directory = "#{node['eucalyptus']["home-directory"]}/source"
+
   build_selinux_command = "make all && make reload && make relabel"
   execute "Build and install eucalyptus-selinux" do
     command build_selinux_command
