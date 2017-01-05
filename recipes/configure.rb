@@ -318,6 +318,10 @@ yum_package "eucalyptus-service-image" do
   only_if { node['eucalyptus']['install-service-image'] }
 end
 
+# install selinux from source after eucalyptus-selinux RPM package
+# has been installed as a prereq to another RPM above (QA-845)
+include_recipe 'eucalyptus::install-selinux-source'
+
 execute "Set imaging VM instance type" do
   command "#{euctl} services.imaging.worker.instance_type=#{node['eucalyptus']['imaging-vm-type']}"
   retries 15

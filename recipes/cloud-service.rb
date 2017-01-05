@@ -54,6 +54,10 @@ yum_package "euca2ools" do
   options node['eucalyptus']['yum-options']
 end
 
+# install selinux from source after eucalyptus-selinux RPM package
+# has been installed as a prereq to another RPM above (QA-845)
+include_recipe 'eucalyptus::install-selinux-source'
+
 template "eucalyptus.conf" do
   path   "#{node["eucalyptus"]["home-directory"]}/etc/eucalyptus/eucalyptus.conf"
   source "eucalyptus.conf.erb"
