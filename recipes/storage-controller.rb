@@ -44,6 +44,7 @@ if node["eucalyptus"]["install-type"] == "packages"
   end
 else
   include_recipe "eucalyptus::install-source"
+  include_recipe 'eucalyptus::install-selinux-source'
 end
 
 template "eucalyptus.conf" do

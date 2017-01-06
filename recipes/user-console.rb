@@ -39,6 +39,7 @@ if node['eucalyptus']['user-console']['install-type'] == 'sources'
     revision source_branch
     action :sync
   end
+  include_recipe 'eucalyptus::install-selinux-source'
   execute "Install python dependencies" do
     command "python setup.py develop"
     cwd source_directory
