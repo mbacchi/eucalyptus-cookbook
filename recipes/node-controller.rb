@@ -42,6 +42,9 @@ if node["eucalyptus"]["install-type"] == "packages"
 else
   include_recipe "eucalyptus::install-source"
   include_recipe 'eucalyptus::install-selinux-source'
+  execute 'Reload and relabel selinux source' do
+    notifies :run, 'execute[Reload and relabel selinux source repo]', :immediately
+  end
   group 'libvirt' do
     action :manage
     members 'eucalyptus'

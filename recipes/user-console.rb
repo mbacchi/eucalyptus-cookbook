@@ -40,6 +40,9 @@ if node['eucalyptus']['user-console']['install-type'] == 'sources'
     action :sync
   end
   include_recipe 'eucalyptus::install-selinux-source'
+  execute 'Reload and relabel selinux source' do
+    notifies :run, 'execute[Reload and relabel selinux source repo]', :immediately
+  end
   execute "Install python dependencies" do
     command "python setup.py develop"
     cwd source_directory

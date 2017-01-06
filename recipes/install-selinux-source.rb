@@ -15,6 +15,13 @@ if node['eucalyptus']['install-type'] == 'sources'
     action :nothing
   end
 
+  reload_relabel_selinux_command = "make reload && make relabel"
+  execute "Reload and relabel selinux source repo" do
+    command reload_relabel_selinux_command
+    cwd "#{node['eucalyptus']["home-directory"]}/source/eucalyptus-selinux"
+    action :nothing
+  end
+
   git "#{source_directory}/eucalyptus-selinux" do
     repository node['eucalyptus']['selinux-repo']
     revision node['eucalyptus']['selinux-branch']

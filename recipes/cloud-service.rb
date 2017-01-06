@@ -57,6 +57,9 @@ end
 # install selinux from source after eucalyptus-selinux RPM package
 # has been installed as a prereq to another RPM above (QA-845)
 include_recipe 'eucalyptus::install-selinux-source'
+execute 'Reload and relabel selinux source' do
+  notifies :run, 'execute[Reload and relabel selinux source repo]', :immediately
+end
 
 template "eucalyptus.conf" do
   path   "#{node["eucalyptus"]["home-directory"]}/etc/eucalyptus/eucalyptus.conf"

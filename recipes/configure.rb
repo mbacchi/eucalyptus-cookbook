@@ -377,6 +377,7 @@ ruby_block "Install Service Image" do
     end
   end
   only_if { node['eucalyptus']['install-service-image'] }
+  notifies :run, 'execute[Reload and relabel selinux source repo]', :immediately
 end
 
 execute "create_imaging_worker" do
