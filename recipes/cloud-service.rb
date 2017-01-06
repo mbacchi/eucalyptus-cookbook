@@ -57,7 +57,8 @@ end
 # install selinux from source after eucalyptus-selinux RPM package
 # has been installed as a prereq to another RPM above (QA-845)
 include_recipe 'eucalyptus::install-selinux-source'
-execute 'Reload and relabel selinux source' do
+ruby_block 'Reload and relabel selinux source' do
+  block {}
   notifies :run, 'execute[Reload and relabel selinux source repo]', :immediately
 end
 
