@@ -39,13 +39,14 @@ if node["eucalyptus"]["install-type"] == "packages"
     baseurl "http://localhost/docker-yumrepo/"
     gpgcheck false
   end
-  yum_package "qemu-kvm-ev" do
+  qemuver = "2.3.0-31"
+  yum_package "qemu-kvm-ev-#{qemuver}" do
     action :install
   end
-  yum_package "qemu-kvm-common-ev" do
+  yum_package "qemu-kvm-common-ev-#{qemuver}" do
     action :install
   end
-  yum_package "qemu-img-ev" do
+  yum_package "qemu-img-ev-#{qemuver}" do
     action :install
   end
   # now stop the container as we don't want to hog resources
