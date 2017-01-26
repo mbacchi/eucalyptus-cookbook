@@ -41,12 +41,15 @@ if node["eucalyptus"]["install-type"] == "packages"
   end
   qemuver = "2.3.0-31"
   yum_package "qemu-kvm-ev-#{qemuver}" do
+    options node['eucalyptus']['yum-options']
     action :install
   end
   yum_package "qemu-kvm-common-ev-#{qemuver}" do
+    options node['eucalyptus']['yum-options']
     action :install
   end
   yum_package "qemu-img-ev-#{qemuver}" do
+    options node['eucalyptus']['yum-options']
     action :install
   end
   # now stop the container as we don't want to hog resources
