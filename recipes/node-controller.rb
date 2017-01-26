@@ -39,7 +39,7 @@ if node["eucalyptus"]["install-type"] == "packages"
     baseurl "http://localhost/docker-yumrepo/"
     gpgcheck false
   end
-  qemuver = "2.3.0-31"
+  qemuver = "2.3.0"
   yum_package "qemu-kvm-ev-#{qemuver}" do
     options node['eucalyptus']['yum-options']
     action :install
