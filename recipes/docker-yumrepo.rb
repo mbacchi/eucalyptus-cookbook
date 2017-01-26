@@ -1,3 +1,12 @@
+# verify prereqs are installed
+prereqs = %w{git make createrepo_c}
+prereqs.each do |item|
+  yum_package item do
+    options node['eucalyptus']['yum-options']
+    action :install
+  end
+end
+
 git "docker-yumrepo" do
   destination "#{node['eucalyptus']['home-directory']}/docker-yumrepo/"
   repository "https://github.com/mbacchi/docker-yumrepo.git"
@@ -6,15 +15,6 @@ end
 
 yum_package "docker" do
   action :install
-end
-
-# verify prereqs are installed
-prereqs = %w{make createrepo_c}
-prereqs.each do |item|
-  yum_package item do
-    options node['eucalyptus']['yum-options']
-    action :install
-  end
 end
 
 service "docker" do
