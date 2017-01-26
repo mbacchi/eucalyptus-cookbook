@@ -33,6 +33,26 @@ end
 
 ## Install packages for the NC
 if node["eucalyptus"]["install-type"] == "packages"
+  include_recipe "eucalyptus::docker-yumrepo"
+  yum_repository "docker-yumrepo" do
+    description "Docker Yum Repo with Qemu rpms"
+    baseurl "http://localhost/docker-yumrepo/"
+    gpgcheck false
+  end
+  yum_package "qemu-kvm-ev" do
+    action :install
+  end
+  yum_package "qemu-kvm-common-ev" do
+    action :install
+  end
+  yum_package "qemu-img-ev" do
+    action :install
+  end
+  # now stop the container as we don't want to hog resources
+  runningcontainer = "docker ps | grep -v CONTAIN | awk '{print $1}'"
+  execute "kill docker container" do
+    command "docker stop #{runningcontainer}"
+  end
   yum_package "eucalyptus-nc" do
     action :upgrade
     options node['eucalyptus']['yum-options']
