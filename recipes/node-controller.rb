@@ -39,7 +39,7 @@ if node["eucalyptus"]["install-type"] == "packages"
     baseurl "http://localhost/docker-yumrepo/"
     gpgcheck false
   end
-  qemuver = "2.3.0"
+  qemuver = "2.3.0-31.el7_2.21.1"
   execute "query docker-yumrepo for qemu-kvm-ev package" do
     command "yum --showduplicates list qemu-kvm-ev-#{qemuver}"
   end
