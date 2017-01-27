@@ -43,17 +43,20 @@ if node["eucalyptus"]["install-type"] == "packages"
   execute "query docker-yumrepo for qemu-kvm-ev package" do
     command "yum --showduplicates list qemu-kvm-ev-#{qemuver}"
   end
-  yum_package "qemu-kvm-ev-#{qemuver}" do
+  yum_package "qemu-kvm-ev" do
     options node['eucalyptus']['yum-options']
     action :install
+    version "#{qemuver}"
   end
-  yum_package "qemu-kvm-common-ev-#{qemuver}" do
+  yum_package "qemu-kvm-common-ev" do
     options node['eucalyptus']['yum-options']
     action :install
+    version "#{qemuver}"
   end
-  yum_package "qemu-img-ev-#{qemuver}" do
+  yum_package "qemu-img-ev" do
     options node['eucalyptus']['yum-options']
     action :install
+    version "#{qemuver}"
   end
   # now stop the container as we don't want to hog resources
   runningcontainer = "docker ps | grep -v CONTAIN | awk '{print $1}'"
