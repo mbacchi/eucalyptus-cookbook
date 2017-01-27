@@ -40,6 +40,9 @@ if node["eucalyptus"]["install-type"] == "packages"
     gpgcheck false
   end
   qemuver = "2.3.0"
+  execute "query docker-yumrepo for qemu-kvm-ev package" do
+    command "yum --showduplicates list qemu-kvm-ev-#{qemuver}"
+  end
   yum_package "qemu-kvm-ev-#{qemuver}" do
     options node['eucalyptus']['yum-options']
     action :install
